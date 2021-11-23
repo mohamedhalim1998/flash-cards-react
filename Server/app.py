@@ -1,3 +1,4 @@
+from typing import NoReturn
 from flask import Flask, json, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from database_setup import CardSet, Card, db
@@ -35,7 +36,13 @@ def add_card_set():
 
 @app.route('/card')
 def get_card():
-    data = Card.query.all()
+    data = Card.query
+    setId = request.args.get("setId")
+    print("filter by = ", setId)
+    if(setId != None):
+        data = data.filter_by(setId=setId)
+    
+
     data = list(map(Card.serialize, data))
     return jsonify(data)
 
