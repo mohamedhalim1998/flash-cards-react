@@ -14,3 +14,7 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.card {
+  @apply rounded-2xl border-2 border-solid shadow-md h-40  border-gray-300 transition hover:shadow-xl;
+}
