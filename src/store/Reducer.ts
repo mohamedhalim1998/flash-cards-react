@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import CardsData from "./CardsData";
+import CardSetsReducer from "./CardSetsReducer";
 
 const reducer = combineReducers({
-  cardsData: CardsData,
+  cardSets: CardSetsReducer,
 });
 export default reducer;
