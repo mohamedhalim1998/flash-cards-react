@@ -1,5 +1,7 @@
+import re
 from typing import NoReturn
 from flask import Flask, json, render_template, request, jsonify
+from flask.wrappers import Response
 from flask_sqlalchemy import SQLAlchemy
 from database_setup import CardSet, Card, db
 app = Flask(__name__)
@@ -11,6 +13,12 @@ with app.app_context():
     db.create_all()
 
 
+def enable_CORS(data):
+    response = jsonify(data)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template("index.html")
@@ -20,7 +28,7 @@ def index():
 def get_card_set():
     data = CardSet.query.all()
     data = list(map(CardSet.serialize, data))
-    return jsonify(data)
+    return enable_CORS((data))
 
 
 @app.route('/cardset/add', methods=["POST"])
@@ -31,7 +39,7 @@ def add_card_set():
         cardSet = CardSet(name=data["name"], count=0)
         db.session.add(cardSet)
         db.session.commit()
-        return jsonify(cardSet.serialize())
+        return enable_CORS(cardSet.serialize())
 
 
 @app.route('/card')
@@ -41,10 +49,9 @@ def get_card():
     print("filter by = ", setId)
     if(setId != None):
         data = data.filter_by(setId=setId)
-    
 
     data = list(map(Card.serialize, data))
-    return jsonify(data)
+    return enable_CORS(data)
 
 
 @app.route('/card/add', methods=["POST"])
@@ -63,7 +70,7 @@ def add_card():
         cardSet[0].count += 1
         # db.session.add(cardSet)
         db.session.commit()
-        return jsonify(card.serialize())
+        return enable_CORS(card.serialize())
 
 
 if __name__ == '__main__':
