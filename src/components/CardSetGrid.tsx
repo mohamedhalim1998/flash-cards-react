@@ -1,19 +1,26 @@
-import React from 'react'
-import CardSetCard from './CardSet'
+import React, { useEffect } from "react";
+import { loadCardSets } from "../store/CardSetsReducer";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import CardSetCard from "./CardSet";
 
 function CardSetGrid() {
-   return (
-      <div className="container grid md:grid-cols-3 gap-4 pt-8 mx-8">
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-         <CardSetCard name="Computer Science Java" count={2} />
-      </div>
-   )
+  const dispatch = useAppDispatch();
+  const cardsets = useAppSelector((state) => state.cardSets.sets);
+  useEffect(() => {
+    dispatch(loadCardSets());
+  }, []);
+  return (
+    <div className="container grid md:grid-cols-3 gap-4 pt-8 mx-8">
+      {cardsets.map((cardset) => (
+        <CardSetCard
+          key={cardset.id}
+          id={cardset.id}
+          name={cardset.name}
+          count={cardset.count}
+        />
+      ))}
+    </div>
+  );
 }
 
-export default CardSetGrid
+export default CardSetGrid;
