@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { loadCardSets } from "../store/CardSetsReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import CardSetCard from "./CardSet";
+import CardSetCard from "../components/CardSet";
 
-function CardSetGrid() {
+function Home() {
   const dispatch = useAppDispatch();
   const cardsets = useAppSelector((state) => state.cardSets.sets);
   useEffect(() => {
@@ -23,4 +23,4 @@ function CardSetGrid() {
   );
 }
 
-export default CardSetGrid;
+export default Home;
