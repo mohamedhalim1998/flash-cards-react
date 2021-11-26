@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import SearchBox from "./SearchBox";
 
 function NavBar() {
@@ -8,9 +9,12 @@ function NavBar() {
         Flash Cards
       </h3>
       <SearchBox />
-      <h4 className="inline-block bg-secondary self-center py-2 px-4 rounded-md">
+      <Link
+        to="/cardset/new"
+        className="bg-secondary hover:opacity-90 self-center py-2 px-4 rounded-md m-0"
+      >
         Create Set
-      </h4>
+      </Link>
     </div>
   );
 }

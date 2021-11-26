@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  margin: 0 !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -16,5 +16,5 @@ code {
 @tailwind utilities;
 
 .card {
-  @apply rounded-2xl border-2 border-solid shadow-md h-40  border-gray-300 transition hover:shadow-xl;
+  @apply rounded-2xl border-2 bg-white border-solid pb-8 shadow-md border-gray-300 transition hover:shadow-xl;
 }
