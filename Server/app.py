@@ -35,9 +35,21 @@ def get_card_set():
 def add_card_set():
     if (request.method == 'POST'):
         data = json.loads(request.args.get("data"))
-        print(data)
         cardSet = CardSet(name=data["name"], count=0)
         db.session.add(cardSet)
+        db.session.commit()
+        print(cardSet)
+        setId = cardSet.id
+        if(data["cards"] != None):
+            for c in data["cards"]:
+                card = Card(
+                    setId=setId,
+                    front=c["front"],
+                    back=c["back"],
+                )
+                db.session.add(card)
+            cardSet.count += len(data["cards"])
+            db.session.add(cardSet)
         db.session.commit()
         return enable_CORS(cardSet.serialize())
 
@@ -49,7 +61,7 @@ def get_card():
     print("filter by = ", setId)
     if(setId != None):
         data = data.filter_by(setId=setId)
-
+    print(data)
     data = list(map(Card.serialize, data))
     return enable_CORS(data)
 
