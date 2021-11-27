@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import CardInput from "../components/CardInput";
 import TextInput from "../components/TextInput";
 import Card from "../data/Card";
+import { createCardSet } from "../store/CardSetsReducer";
+import { useAppDispatch } from "../store/hooks";
 
 interface FormData {
   title: string;
@@ -13,6 +15,8 @@ const NewSet: FC = () => {
     title: "",
     cards: [{ front: "f", back: "b" }],
   });
+  const dispatch = useAppDispatch();
+
   return (
     <div className="container mx-auto">
       <h1 className="text-3xl font-sans font-semibold text-left my-10 text-gray-700">
@@ -39,7 +43,8 @@ const NewSet: FC = () => {
           //   {index} {value}
           // </h1>;
           <CardInput
-            num={index+1}
+            key={index}
+            num={index + 1}
             forntValue={value.front}
             backValue={value.back}
             frontOnChange={(e) => {
@@ -87,6 +92,10 @@ const NewSet: FC = () => {
             name="create"
             id="create"
             className="text-right p-5 px-10 bg-secondary hover:opacity-90 rounded-md text-white font-semibold"
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(createCardSet(formdata.title, formdata.cards));
+            }}
           >
             Create
           </button>
