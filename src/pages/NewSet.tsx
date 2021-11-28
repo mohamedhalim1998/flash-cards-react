@@ -10,16 +10,40 @@ interface FormData {
   description: string;
   cards: Card[];
 }
-type k = keyof FormData
+interface FormError {
+  cardsError?: string;
+  titleError?: string;
+}
 
 const NewSet: FC = () => {
   const [formdata, setFormData] = useState<FormData>({
     title: "",
     description: "",
-    cards: [{ front: "f", back: "b" }],
+    cards: [
+      { front: "", back: "" },
+      { front: "", back: "" },
+    ],
   });
+  const [formError, setFormError] = useState<FormError>({});
   const dispatch = useAppDispatch();
+  const emptyCard = (card: Card): boolean =>
+    (card.back != "" && card.front != "");
 
+  const validateForm = (): boolean => {
+    const data = { ...formError };
+    if (formdata.title === "") {
+      data.titleError = "YOU NEED TO ENTER A TITLE";
+    } else {
+      data.titleError = undefined;
+    }
+    if (formdata.cards.filter(emptyCard).length < 2) {
+      data.cardsError = "NEED AT LEAST TWO NON EMPTY CARDS";
+    } else {
+      data.cardsError = undefined;
+    }
+    setFormError(data);
+    return data.titleError == undefined && data.cardsError == undefined;
+  };
   return (
     <div className="container mx-auto">
       <h1 className="text-3xl font-sans font-semibold text-left my-10 text-gray-700">
@@ -29,6 +53,7 @@ const NewSet: FC = () => {
         <TextInput
           label="TITLE"
           name="cardsetTitle"
+          error={formError.titleError}
           hint="card set title"
           value={formdata.title}
           onChange={(e) => {
@@ -56,33 +81,40 @@ const NewSet: FC = () => {
             setFormData(data);
           }}
         />
-        {formdata.cards.map((value, index) => (
-          <CardInput
-            key={index}
-            num={index + 1}
-            forntValue={value.front}
-            backValue={value.back}
-            frontOnChange={(e) => {
-              const data: FormData = {
-                title: formdata.title,
-                description: formdata.description,
-                cards: [...formdata.cards],
-              };
-              data.cards[index].front = e.currentTarget.value;
-              setFormData(data);
-            }}
-            backOnChange={(e) => {
-              const data: FormData = {
-                title: formdata.title,
-                description: formdata.description,
-                cards: [...formdata.cards],
-              };
-              data.cards[index].back = e.currentTarget.value;
-              setFormData(data);
-            }}
-          />
-        ))}
+        <div>
+          {formError.cardsError && (
+            <div className="border-2 border-error text-error w-2/4 py-2 mx-auto">
+              NEED AT LEAST TWO NON EMPTY CARDS
+            </div>
+          )}
 
+          {formdata.cards.map((value, index) => (
+            <CardInput
+              key={index}
+              num={index + 1}
+              forntValue={value.front}
+              backValue={value.back}
+              frontOnChange={(e) => {
+                const data: FormData = {
+                  title: formdata.title,
+                  description: formdata.description,
+                  cards: [...formdata.cards],
+                };
+                data.cards[index].front = e.currentTarget.value;
+                setFormData(data);
+              }}
+              backOnChange={(e) => {
+                const data: FormData = {
+                  title: formdata.title,
+                  description: formdata.description,
+                  cards: [...formdata.cards],
+                };
+                data.cards[index].back = e.currentTarget.value;
+                setFormData(data);
+              }}
+            />
+          ))}
+        </div>
         <div className="text-center">
           <button
             type="submit"
@@ -112,7 +144,15 @@ const NewSet: FC = () => {
             className="text-right p-5 px-10 bg-secondary hover:opacity-90 rounded-md text-white font-semibold"
             onClick={(e) => {
               e.preventDefault();
-              dispatch(createCardSet(formdata.title, formdata.description, formdata.cards));
+              if (validateForm()) {
+                dispatch(
+                  createCardSet(
+                    formdata.title,
+                    formdata.description,
+                    formdata.cards.filter(emptyCard)
+                  )
+                );
+              }
             }}
           >
             Create
