@@ -5,6 +5,7 @@ import Card from "../data/Card";
 import { createCardSet } from "../store/CardSetsReducer";
 import { useAppDispatch } from "../store/hooks";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   title: string;
@@ -26,6 +27,7 @@ const NewSet: FC = () => {
     ],
   });
   const [formError, setFormError] = useState<FormError>({});
+  let navigate = useNavigate();
   const dispatch = useAppDispatch();
   const emptyCard = (card: Card): boolean =>
     card.back != "" && card.front != "";
@@ -199,6 +201,7 @@ const NewSet: FC = () => {
                     formdata.cards.filter(emptyCard)
                   )
                 );
+                navigate("/cardset");
               }
             }}
           >
