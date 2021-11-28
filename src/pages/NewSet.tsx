@@ -27,7 +27,7 @@ const NewSet: FC = () => {
   const [formError, setFormError] = useState<FormError>({});
   const dispatch = useAppDispatch();
   const emptyCard = (card: Card): boolean =>
-    (card.back != "" && card.front != "");
+    card.back != "" && card.front != "";
 
   const validateForm = (): boolean => {
     const data = { ...formError };
@@ -94,6 +94,15 @@ const NewSet: FC = () => {
               num={index + 1}
               forntValue={value.front}
               backValue={value.back}
+              onDelete={() => {
+                const data: FormData = {
+                  title: formdata.title,
+                  description: formdata.description,
+                  cards: [...formdata.cards],
+                };
+                data.cards.splice(index, 1);
+                setFormData(data);
+              }}
               frontOnChange={(e) => {
                 const data: FormData = {
                   title: formdata.title,
