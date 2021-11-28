@@ -16,6 +16,7 @@ const apiMiddleware: Middleware =
   (store) => (next) => async (action: AnyAction) => {
     if (action.type != apiCall.type) return next(action);
     const payload = action.payload as ApiCallParams;
+    next(action);
     const data = (
       await axios.request({
         url: payload.url,
@@ -28,6 +29,5 @@ const apiMiddleware: Middleware =
       payload: { data },
     });
     console.log(data);
-    next(action);
   };
 export default apiMiddleware;
