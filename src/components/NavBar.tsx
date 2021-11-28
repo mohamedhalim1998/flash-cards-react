@@ -5,9 +5,9 @@ import SearchBox from "./SearchBox";
 function NavBar() {
   return (
     <div className="bg-primary flex flex-row content-center justify-between px-8">
-      <h3 className="font-bold text-2xl text-white text-left p-4 inline-block">
+      <Link to="/cardset" className="font-bold text-2xl text-white text-left p-4 inline-block">
         Flash Cards
-      </h3>
+      </Link>
       <SearchBox />
       <Link
         to="/cardset/new"
