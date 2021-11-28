@@ -7,12 +7,14 @@ class CardSet(db.Model):
     id = db.Column(db.Integer, primary_key=True,
                    autoincrement=True)
     name = db.Column(db.String)
+    description = db.Column(db.String)
     count = db.Column(db.Integer)
 
     def serialize(cardSet):
         return {
             'id': cardSet.id,
             "name": cardSet.name,
+            "description": cardSet.description,
             "count": cardSet.count
         }
 

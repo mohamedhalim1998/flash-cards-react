@@ -7,12 +7,15 @@ import { useAppDispatch } from "../store/hooks";
 
 interface FormData {
   title: string;
+  description: string;
   cards: Card[];
 }
+type k = keyof FormData
 
 const NewSet: FC = () => {
   const [formdata, setFormData] = useState<FormData>({
     title: "",
+    description: "",
     cards: [{ front: "f", back: "b" }],
   });
   const dispatch = useAppDispatch();
@@ -31,17 +34,29 @@ const NewSet: FC = () => {
           onChange={(e) => {
             const data: FormData = {
               title: formdata.title,
+              description: formdata.description,
               cards: [...formdata.cards],
             };
             data.title = e.currentTarget.value;
             setFormData(data);
           }}
         />
+        <TextInput
+          label="DESCRIPTION"
+          name="description"
+          hint="card set description"
+          value={formdata.description}
+          onChange={(e) => {
+            const data: FormData = {
+              title: formdata.title,
+              description: formdata.description,
+              cards: [...formdata.cards],
+            };
+            data.description = e.currentTarget.value;
+            setFormData(data);
+          }}
+        />
         {formdata.cards.map((value, index) => (
-          // console.log(value);
-          // <h1 key={index}>
-          //   {index} {value}
-          // </h1>;
           <CardInput
             key={index}
             num={index + 1}
@@ -50,6 +65,7 @@ const NewSet: FC = () => {
             frontOnChange={(e) => {
               const data: FormData = {
                 title: formdata.title,
+                description: formdata.description,
                 cards: [...formdata.cards],
               };
               data.cards[index].front = e.currentTarget.value;
@@ -58,6 +74,7 @@ const NewSet: FC = () => {
             backOnChange={(e) => {
               const data: FormData = {
                 title: formdata.title,
+                description: formdata.description,
                 cards: [...formdata.cards],
               };
               data.cards[index].back = e.currentTarget.value;
@@ -76,6 +93,7 @@ const NewSet: FC = () => {
               e.preventDefault();
               const data: FormData = {
                 title: formdata.title,
+                description: formdata.description,
                 cards: [...formdata.cards, { front: "", back: "" }],
               };
               console.log(data);
@@ -94,7 +112,7 @@ const NewSet: FC = () => {
             className="text-right p-5 px-10 bg-secondary hover:opacity-90 rounded-md text-white font-semibold"
             onClick={(e) => {
               e.preventDefault();
-              dispatch(createCardSet(formdata.title, formdata.cards));
+              dispatch(createCardSet(formdata.title, formdata.description, formdata.cards));
             }}
           >
             Create

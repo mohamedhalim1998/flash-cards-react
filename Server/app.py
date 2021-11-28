@@ -35,7 +35,8 @@ def get_card_set():
 def add_card_set():
     if (request.method == 'POST'):
         data = json.loads(request.args.get("data"))
-        cardSet = CardSet(name=data["name"], count=0)
+        cardSet = CardSet(name=data["name"],
+                          description=data["description"], count=0)
         db.session.add(cardSet)
         db.session.commit()
         print(cardSet)

@@ -10,13 +10,17 @@ export const loadCardSets = () =>
     onSuccess: updateSets.toString(),
   });
 
-export const createCardSet = (name: string, cards: Card[]) =>
+export const createCardSet = (
+  name: string,
+  description: string,
+  cards: Card[]
+) =>
   apiCall({
     url: "http://localhost:5000/cardset/add",
     method: "POST",
     onSuccess: updateSets.toString(),
     params: {
-      data: { name, cards },
+      data: { name, description, cards },
     },
   });
 

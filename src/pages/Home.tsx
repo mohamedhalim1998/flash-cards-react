@@ -15,6 +15,7 @@ function Home() {
         <CardSetCard
           key={cardset.id}
           id={cardset.id}
+          description={cardset.description}
           name={cardset.name}
           count={cardset.count}
         />
