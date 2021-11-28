@@ -4,6 +4,7 @@ import TextInput from "../components/TextInput";
 import Card from "../data/Card";
 import { createCardSet } from "../store/CardSetsReducer";
 import { useAppDispatch } from "../store/hooks";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 interface FormData {
   title: string;
@@ -87,42 +88,79 @@ const NewSet: FC = () => {
               NEED AT LEAST TWO NON EMPTY CARDS
             </div>
           )}
-
-          {formdata.cards.map((value, index) => (
-            <CardInput
-              key={index}
-              num={index + 1}
-              forntValue={value.front}
-              backValue={value.back}
-              onDelete={() => {
-                const data: FormData = {
-                  title: formdata.title,
-                  description: formdata.description,
-                  cards: [...formdata.cards],
-                };
-                data.cards.splice(index, 1);
-                setFormData(data);
-              }}
-              frontOnChange={(e) => {
-                const data: FormData = {
-                  title: formdata.title,
-                  description: formdata.description,
-                  cards: [...formdata.cards],
-                };
-                data.cards[index].front = e.currentTarget.value;
-                setFormData(data);
-              }}
-              backOnChange={(e) => {
-                const data: FormData = {
-                  title: formdata.title,
-                  description: formdata.description,
-                  cards: [...formdata.cards],
-                };
-                data.cards[index].back = e.currentTarget.value;
-                setFormData(data);
-              }}
-            />
-          ))}
+          <DragDropContext
+            onDragEnd={(result) => {
+              if (result.destination == undefined) return;
+              const data: FormData = {
+                title: formdata.title,
+                description: formdata.description,
+                cards: [...formdata.cards],
+              };
+              const [reorderedItem] = data.cards.splice(result.source.index, 1);
+              data.cards.splice(result.destination.index, 0, reorderedItem);
+              setFormData(data);
+            }}
+          >
+            <Droppable droppableId="flashcards">
+              {(provided) => (
+                <ul
+                  className="flashcards"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {formdata.cards.map((value, index) => (
+                    <Draggable
+                      key={index}
+                      draggableId={index.toString()}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <CardInput
+                            num={index + 1}
+                            forntValue={value.front}
+                            backValue={value.back}
+                            onDelete={() => {
+                              const data: FormData = {
+                                title: formdata.title,
+                                description: formdata.description,
+                                cards: [...formdata.cards],
+                              };
+                              data.cards.splice(index, 1);
+                              setFormData(data);
+                            }}
+                            frontOnChange={(e) => {
+                              const data: FormData = {
+                                title: formdata.title,
+                                description: formdata.description,
+                                cards: [...formdata.cards],
+                              };
+                              data.cards[index].front = e.currentTarget.value;
+                              setFormData(data);
+                            }}
+                            backOnChange={(e) => {
+                              const data: FormData = {
+                                title: formdata.title,
+                                description: formdata.description,
+                                cards: [...formdata.cards],
+                              };
+                              data.cards[index].back = e.currentTarget.value;
+                              setFormData(data);
+                            }}
+                          />
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
         <div className="text-center">
           <button
