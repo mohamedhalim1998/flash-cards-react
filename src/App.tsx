@@ -4,6 +4,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import NewSet from "./pages/NewSet";
+import Cards from "./pages/Cards";
 
 function App() {
   return (
@@ -11,9 +12,10 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/cardset/new" element={<NewSet />} />
-        <Route path="/cardset" element={<Home />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
+          <Route path="/cardset/:id" element={<Cards />} />
+          <Route path="/cardset" element={<Home />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
     </div>
   );
 }
