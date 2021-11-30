@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TwinSpin } from "react-cssfx-loading/lib";
 import { useParams } from "react-router-dom";
+import CardsNavigation from "../components/CardsNavigation";
 import FlashCard from "../components/FlashCard";
 import SideBar from "../components/SideBar";
 
@@ -30,8 +31,8 @@ function Cards() {
     });
     dispatch(loadCardsFromSet(setId));
   }, [dispatch]);
-  console.log(cards);
-  console.log(cardSet);
+//   console.log(cards);
+//   console.log(cardSet);
   if (!cardSet || cards.length == 0) {
     return (
       <div className="flex flex-row justify-center items-center h-screen container text-center mx-auto">
@@ -43,12 +44,22 @@ function Cards() {
     <div className="w-3/5 pt-12 mx-auto grid grid-cols-4">
       <div className="mr-12">
         <h2 className="font-semibold text-4xl text-gray-800 text-left">
-          {cardSet ? cardSet.name : "Java"}
+          {cardSet.name}
         </h2>
         <SideBar />
       </div>
       <div className="h-96 col-span-3 flex flex-col justify-center">
         <FlashCard {...cards[currentCard]} />
+        <CardsNavigation
+          onBack={() => {
+            setCurrentCard(currentCard - 1);
+          }}
+          onNext={() => {
+            setCurrentCard(currentCard + 1);
+          }}
+          current={currentCard + 1}
+          size={cards.length}
+        />
       </div>
     </div>
   );
