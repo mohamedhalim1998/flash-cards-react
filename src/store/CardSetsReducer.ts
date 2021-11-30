@@ -9,6 +9,7 @@ import CardSet from "../data/CardSet";
 import { apiCall } from "../middleware/ApiMiddleware";
 import { RootState } from "./Store";
 
+export const updateLoading = createAction<boolean>("updateLoading");
 export const updateSets = createAction("updateSets");
 export const updateCards = createAction("updateCards");
 export const loadCardSets = () =>
@@ -40,20 +41,22 @@ export const loadCardsFromSet = (setId: number) =>
     },
   });
 
-export const getSetById = (
-  id: number
-): ((state: RootState) => CardSet) =>
+export const getSetById = (id: number): ((state: RootState) => CardSet) =>
   createSelector(
     (state: RootState) => state.cardSets.sets,
     (sets: CardSet[]) => sets.filter((set) => set.id === id)[0]
   );
 
 const initState = {
+  loading: false,
   sets: [] as CardSet[],
   cards: [] as Card[],
 };
 
 export default createReducer(initState, {
+  [updateLoading.type]: (state, action) => {
+    state.loading = action.payload;
+  },
   [updateSets.type]: (state, action) => {
     state.sets = action.payload.data;
   },
