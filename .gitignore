@@ -24,3 +24,5 @@ yarn-error.log*
 
 Server/db.sqlite3
 Server/__pycache__/*
+
+.vscode/*
