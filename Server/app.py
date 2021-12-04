@@ -109,5 +109,18 @@ def add_card():
         return enable_CORS(card.serialize())
 
 
+@app.route('/card/update', methods=["PUT"])
+def update_card():
+    if (request.method == 'PUT'):
+        data = json.loads(request.args.get("data"))
+        print(data)
+        card = Card.query.filter_by(id=data["id"]).all()[0]
+        card.front = data["front"]
+        card.back = data["back"]
+        db.session.add(card)
+        db.session.commit()
+        return enable_CORS(card.serialize())
+
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
