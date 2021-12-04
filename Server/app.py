@@ -55,6 +55,29 @@ def add_card_set():
         return enable_CORS(cardSet.serialize())
 
 
+@app.route('/cardset/update', methods=["PUT"])
+def update_card_set():
+    if (request.method == 'PUT'):
+        data = json.loads(request.args.get("data"))
+        setId = data["setId"]
+        cardSet = CardSet.query.filter_by(id=data['setId']).all()[0]
+        cardSet.name = data["name"]
+        cardSet.description = data["description"]
+        Card.query.filter_by(setId=setId).delete()
+        if(data["cards"] != None):
+            for c in data["cards"]:
+                card = Card(
+                    setId=setId,
+                    front=c["front"],
+                    back=c["back"],
+                )
+                db.session.add(card)
+            cardSet.count = len(data["cards"])
+            db.session.add(cardSet)
+        db.session.commit()
+        return enable_CORS(cardSet.serialize())
+
+
 @app.route('/card')
 def get_card():
     data = Card.query
