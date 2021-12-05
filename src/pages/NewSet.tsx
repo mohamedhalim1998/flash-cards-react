@@ -1,169 +1,28 @@
-import { FC, useState } from "react";
-import CardInput from "../components/CardInput";
-import TextInput from "../components/TextInput";
-import Card from "../data/Card";
+import { FC } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useNavigate, useParams } from "react-router-dom";
+import DraggableCardList from "../components/DraggableCardList";
+import CardSetHeader from "../components/CardSetHeader";
+import {
+  addCard,
+  getNoneEmptyCards,
+  validateForm,
+} from "../store/SetFormReducer";
 import { createCardSet } from "../store/CardSetsReducer";
-import { useAppDispatch } from "../store/hooks";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useNavigate } from "react-router-dom";
-
-interface FormData {
-  title: string;
-  description: string;
-  cards: Card[];
-}
-interface FormError {
-  cardsError?: string;
-  titleError?: string;
-}
 
 const NewSet: FC = () => {
-  const [formdata, setFormData] = useState<FormData>({
-    title: "",
-    description: "",
-    cards: [
-      { front: "", back: "" },
-      { front: "", back: "" },
-    ],
-  });
-  const [formError, setFormError] = useState<FormError>({});
-  let navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const emptyCard = (card: Card): boolean =>
-    card.back != "" && card.front != "";
-
-  const validateForm = (): boolean => {
-    const data = { ...formError };
-    if (formdata.title === "") {
-      data.titleError = "YOU NEED TO ENTER A TITLE";
-    } else {
-      data.titleError = undefined;
-    }
-    if (formdata.cards.filter(emptyCard).length < 2) {
-      data.cardsError = "NEED AT LEAST TWO NON EMPTY CARDS";
-    } else {
-      data.cardsError = undefined;
-    }
-    setFormError(data);
-    return data.titleError == undefined && data.cardsError == undefined;
-  };
+  let navigate = useNavigate();
+  const formData = useAppSelector((state) => state.cardSetForm);
   return (
     <div className="container mx-auto">
       <h1 className="text-3xl font-sans font-semibold text-left my-10 text-gray-700">
         Create a new Set
       </h1>
       <form action="" className="py-4">
-        <TextInput
-          label="TITLE"
-          name="cardsetTitle"
-          error={formError.titleError}
-          hint="card set title"
-          value={formdata.title}
-          onChange={(e) => {
-            const data: FormData = {
-              title: formdata.title,
-              description: formdata.description,
-              cards: [...formdata.cards],
-            };
-            data.title = e.currentTarget.value;
-            setFormData(data);
-          }}
-        />
-        <TextInput
-          label="DESCRIPTION"
-          name="description"
-          hint="card set description"
-          value={formdata.description}
-          onChange={(e) => {
-            const data: FormData = {
-              title: formdata.title,
-              description: formdata.description,
-              cards: [...formdata.cards],
-            };
-            data.description = e.currentTarget.value;
-            setFormData(data);
-          }}
-        />
-        <div>
-          {formError.cardsError && (
-            <div className="border-2 border-error text-error w-2/4 py-2 mx-auto">
-              NEED AT LEAST TWO NON EMPTY CARDS
-            </div>
-          )}
-          <DragDropContext
-            onDragEnd={(result) => {
-              if (result.destination == undefined) return;
-              const data: FormData = {
-                title: formdata.title,
-                description: formdata.description,
-                cards: [...formdata.cards],
-              };
-              const [reorderedItem] = data.cards.splice(result.source.index, 1);
-              data.cards.splice(result.destination.index, 0, reorderedItem);
-              setFormData(data);
-            }}
-          >
-            <Droppable droppableId="flashcards">
-              {(provided) => (
-                <ul
-                  className="flashcards"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {formdata.cards.map((value, index) => (
-                    <Draggable
-                      key={index}
-                      draggableId={index.toString()}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <CardInput
-                            num={index + 1}
-                            forntValue={value.front}
-                            backValue={value.back}
-                            onDelete={() => {
-                              const data: FormData = {
-                                title: formdata.title,
-                                description: formdata.description,
-                                cards: [...formdata.cards],
-                              };
-                              data.cards.splice(index, 1);
-                              setFormData(data);
-                            }}
-                            frontOnChange={(e) => {
-                              const data: FormData = {
-                                title: formdata.title,
-                                description: formdata.description,
-                                cards: [...formdata.cards],
-                              };
-                              data.cards[index].front = e.currentTarget.value;
-                              setFormData(data);
-                            }}
-                            backOnChange={(e) => {
-                              const data: FormData = {
-                                title: formdata.title,
-                                description: formdata.description,
-                                cards: [...formdata.cards],
-                              };
-                              data.cards[index].back = e.currentTarget.value;
-                              setFormData(data);
-                            }}
-                          />
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
+        <CardSetHeader />
+        <DraggableCardList />
+
         <div className="text-center">
           <button
             type="submit"
@@ -172,13 +31,7 @@ const NewSet: FC = () => {
             className="text-center text-gray-600 p-2 font-semibold border-b-4 border-secondary focus:outline-none hover:border-accent hover:text-accent"
             onClick={(e) => {
               e.preventDefault();
-              const data: FormData = {
-                title: formdata.title,
-                description: formdata.description,
-                cards: [...formdata.cards, { front: "", back: "" }],
-              };
-              console.log(data);
-              setFormData(data);
+              dispatch(addCard());
             }}
           >
             + ADD CARD
@@ -193,12 +46,13 @@ const NewSet: FC = () => {
             className="text-right p-5 px-10 bg-secondary hover:opacity-90 rounded-md text-white font-semibold"
             onClick={(e) => {
               e.preventDefault();
-              if (validateForm()) {
+              dispatch(validateForm());
+              if (formData.validForm) {
                 dispatch(
                   createCardSet(
-                    formdata.title,
-                    formdata.description,
-                    formdata.cards.filter(emptyCard)
+                    formData.title,
+                    formData.description,
+                    getNoneEmptyCards()(formData)
                   )
                 );
                 navigate("/cardset");

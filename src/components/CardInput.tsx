@@ -1,25 +1,24 @@
+import { stat } from "fs";
 import React, { FC } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { deleteCard, updateCardBack, updateCardFront } from "../store/SetFormReducer";
 import TextInput from "./TextInput";
 
-interface CardInputParams {
-  num: number;
-  forntValue: string;
-  frontOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  backValue: string;
-  backOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onDelete: () => void;
-}
+const CardInput: FC<{ index: number }> = (params) => {
+  const index = params.index;
+  console.log(index);
+  const front = useAppSelector((state) => state.cardSetForm.cards[index].front);
+  const back = useAppSelector((state) => state.cardSetForm.cards[index].back);
 
-const CardInput: FC<CardInputParams> = (params: CardInputParams) => {
-  console.log(params);
+  const dispatch = useAppDispatch();
   return (
     <div className="card text-left p-4 my-4">
       <div className="flex flex-row container text-gray-600 items-center justify-start">
-        <h3 className="font-semibold ">{params.num}</h3>
-        <i 
+        <h3 className="font-semibold ">{index + 1}</h3>
+        <i
           className="fa fa-lg fa-trash inline-block justify-self-end ml-auto cursor-pointer"
           onClick={(e) => {
-            params.onDelete();
+            dispatch(deleteCard(index));
           }}
         />
       </div>
@@ -28,15 +27,23 @@ const CardInput: FC<CardInputParams> = (params: CardInputParams) => {
           label="FRONT"
           name="CardFront"
           hint="Enter Card Front"
-          value={params.forntValue}
-          onChange={params.frontOnChange}
+          value={front}
+          onChange={(e) => {
+            dispatch(
+              updateCardFront({ index: index, value: e.currentTarget.value })
+            );
+          }}
         />
         <TextInput
           label="BACK"
           name="CardBack"
           hint="Enter Card Back"
-          value={params.backValue}
-          onChange={params.backOnChange}
+          value={back}
+          onChange={(e) => {
+            dispatch(
+              updateCardBack({ index: index, value: e.currentTarget.value })
+            );
+          }}
         />
       </div>
     </div>
