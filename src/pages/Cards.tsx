@@ -31,8 +31,8 @@ function Cards() {
     });
     dispatch(loadCardsFromSet(setId));
   }, [dispatch]);
-//   console.log(cards);
-//   console.log(cardSet);
+  //   console.log(cards);
+  //   console.log(cardSet);
   if (!cardSet || cards.length == 0) {
     return (
       <div className="flex flex-row justify-center items-center h-screen container text-center mx-auto">
@@ -46,7 +46,7 @@ function Cards() {
         <h2 className="font-semibold text-4xl text-gray-800 text-left">
           {cardSet.name}
         </h2>
-        <SideBar />
+        <SideBar setId={cardSet.id} />
       </div>
       <div className="h-96 col-span-3 flex flex-col justify-center">
         <FlashCard {...cards[currentCard]} />
