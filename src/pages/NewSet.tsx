@@ -21,6 +21,7 @@ import {
 } from "../store/CardSetsReducer";
 import { TwinSpin } from "react-cssfx-loading/lib";
 import CreateSetButton from "../components/CreateSetButton";
+import AddCardButton from "../components/AddCardButton";
 
 const NewSet: FC = () => {
   const dispatch = useAppDispatch();
@@ -59,22 +60,7 @@ const NewSet: FC = () => {
       <form action="" className="py-4">
         <CardSetHeader />
         <DraggableCardList />
-
-        <div className="text-center">
-          <button
-            type="submit"
-            name="create"
-            id="create"
-            className="text-center text-gray-600 p-2 font-semibold border-b-4 border-secondary focus:outline-none hover:border-accent hover:text-accent"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("add card");
-              dispatch(addNewCard());
-            }}
-          >
-            + ADD CARD
-          </button>
-        </div>
+        <AddCardButton />
         <CreateSetButton />
       </form>
     </div>
