@@ -36,6 +36,8 @@ export const updateCardsError = createAction<string | undefined>(
 );
 export const reorderCard =
   createAction<{ source: number; dest: number }>("reorderCard");
+
+export const resetForm = createAction("resetForm");
 export const fillCards = (setId: number) =>
   apiCall({
     url: `http://localhost:5000/card`,
@@ -103,5 +105,13 @@ export default createReducer(initState, {
   ) => {
     const [reorderedItem] = state.cards.splice(action.payload.source, 1);
     state.cards.splice(action.payload.dest, 0, reorderedItem);
+  },
+  [resetForm.type]: (state) => {
+    state.setId = undefined;
+    state.title = "";
+    state.cards = [];
+    state.description = "";
+    state.cardsError = undefined;
+    state.titleError = undefined;
   },
 });

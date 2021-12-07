@@ -7,6 +7,7 @@ import {
   addNewCard,
   fillCards,
   getNoneEmptyCards,
+  resetForm,
   updateCardsError,
   updateDescription,
   updateSetId,
@@ -53,9 +54,12 @@ const NewSet: FC = () => {
         dispatch(fillCards(setId));
       }
     }
+    return () => {
+      dispatch(resetForm());
+    };
   }, [dispatch]);
   console.log(formData.cards);
-  if (formData.cards.length === 0) {
+  if (formData.setId && formData.cards.length === 0) {
     console.log("loading");
     return (
       <div className="flex flex-row justify-center items-center h-screen container text-center mx-auto">
