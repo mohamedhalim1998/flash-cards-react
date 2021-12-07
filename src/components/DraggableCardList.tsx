@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -10,9 +11,10 @@ import { reorderCard } from "../store/SetFormReducer";
 import CardInput from "./CardInput";
 
 function DraggableCardList() {
-  const cards = useAppSelector((state) => state.cardSetForm.cards);
+  let cards = useAppSelector((state) => state.cardSetForm.cards);
   const cardsError = useAppSelector((state) => state.cardSetForm.cardsError);
   const dispatch = useAppDispatch();
+  console.log(cards);
   return (
     <div>
       {cardsError && (

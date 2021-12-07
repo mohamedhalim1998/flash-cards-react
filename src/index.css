@@ -16,7 +16,7 @@ code {
 @tailwind utilities;
 
 .card {
-  @apply rounded-2xl border-2 bg-white border-solid py-8 shadow-md border-gray-300 transition hover:shadow-xl;
+  @apply rounded-2xl border-2 bg-white border-solid py-8 shadow-md border-gray-300 transition hover:shadow-xl px-4;
 }
 
 @keyframes flip-card-animation {
@@ -31,17 +31,16 @@ code {
 @keyframes flip-text-animation {
   0% {
     transform: rotateX(0deg);
-    opacity: 100%
+    opacity: 100%;
   }
   50% {
-   opacity: 0%
+    opacity: 0%;
   }
   100% {
     transform: rotateX(360deg);
-    opacity: 100%
+    opacity: 100%;
   }
 }
-
 
 .flip-card {
   animation-name: flip-card-animation;

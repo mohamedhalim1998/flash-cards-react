@@ -32,6 +32,21 @@ export const createCardSet = (
     },
   });
 
+export const editCardSet = (
+  setId: number,
+  name: string,
+  description: string,
+  cards: Card[]
+) =>
+  apiCall({
+    url: "http://localhost:5000/cardset/update",
+    method: "POST",
+    onSuccess: loadCardSets.toString(),
+    params: {
+      data: { setId, name, description, cards },
+    },
+  });
+
 export const loadCardsFromSet = (setId: number) =>
   apiCall({
     url: `http://localhost:5000/card`,

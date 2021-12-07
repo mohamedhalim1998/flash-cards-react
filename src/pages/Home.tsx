@@ -2,9 +2,13 @@ import React, { useEffect } from "react";
 
 import { useAppSelector } from "../store/hooks";
 import CardSetCard from "../components/CardSet";
+import { loadCardSets } from "../store/CardSetsReducer";
 
 function Home() {
   const cardsets = useAppSelector((state) => state.cardSets.sets);
+  useEffect(() => {
+    loadCardSets();
+  }, []);
   return (
     <div className="container grid md:grid-cols-3 gap-4 pt-8 mx-auto px-8">
       {cardsets.map((cardset) => (

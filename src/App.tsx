@@ -30,6 +30,7 @@ function App() {
     <div className="App bg-gray-100">
       <NavBar />
       <Routes>
+        <Route path="/cardset/edit/:id" element={<NewSet />} />
         <Route path="/cardset/new" element={<NewSet />} />
         <Route path="/cardset/:id" element={<Cards />} />
         <Route path="/cardset" element={<Home />} />
