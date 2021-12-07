@@ -14,7 +14,7 @@ function CardSetCard(cardset: CardSet) {
       <div className="flex flex-row justify-between items-center">
         <h2 className="font-bold text-xl  text-left">{cardset.name}</h2>
         <i
-          className="fa fa-edit fa-xl text-gray-700 px-4"
+          className="fa fa-edit fa-lg text-gray-600"
           onClick={(e) => {
             e.stopPropagation()
             navigate(`/cardset/edit/${cardset.id}`);

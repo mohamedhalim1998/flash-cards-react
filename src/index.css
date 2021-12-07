@@ -16,7 +16,7 @@ code {
 @tailwind utilities;
 
 .card {
-  @apply rounded-2xl border-2 bg-white border-solid py-8 shadow-md border-gray-300 transition hover:shadow-xl px-4;
+  @apply rounded-2xl border-2 bg-white border-solid shadow-md border-gray-300 transition hover:shadow-xl p-4;
 }
 
 @keyframes flip-card-animation {
