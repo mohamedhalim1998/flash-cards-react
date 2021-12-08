@@ -22,6 +22,7 @@ import {
 import { TwinSpin } from "react-cssfx-loading/lib";
 import CreateSetButton from "../components/CreateSetButton";
 import AddCardButton from "../components/AddCardButton";
+import NavBar from "../components/NavBar";
 
 const NewSet: FC = () => {
   const dispatch = useAppDispatch();
@@ -53,16 +54,19 @@ const NewSet: FC = () => {
     );
   }
   return (
-    <div className="container mx-auto">
-      <h1 className="text-3xl font-sans font-semibold text-left my-10 text-gray-700">
-        Create a new Set
-      </h1>
-      <form action="" className="py-4">
-        <CardSetHeader />
-        <DraggableCardList />
-        <AddCardButton />
-        <CreateSetButton />
-      </form>
+    <div>
+      <NavBar />
+      <div className="container mx-auto">
+        <h1 className="text-3xl font-sans font-semibold text-left my-10 text-gray-700">
+          Create a new Set
+        </h1>
+        <form action="" className="py-4">
+          <CardSetHeader />
+          <DraggableCardList />
+          <AddCardButton />
+          <CreateSetButton />
+        </form>
+      </div>
     </div>
   );
 };

@@ -15,9 +15,9 @@ function App() {
   useEffect(() => {
     dispatch(updateLoading(true));
     dispatch(loadCardSets());
-     setTimeout(() => {
-       dispatch(updateLoading(false));
-     }, 1000);
+    setTimeout(() => {
+      dispatch(updateLoading(false));
+    }, 1000);
   }, []);
   if (loading) {
     return (
@@ -28,7 +28,6 @@ function App() {
   }
   return (
     <div className="App bg-gray-100">
-      <NavBar />
       <Routes>
         <Route path="/cardset/edit/:id" element={<NewSet />} />
         <Route path="/cardset/new" element={<NewSet />} />
