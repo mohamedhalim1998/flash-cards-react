@@ -20,7 +20,12 @@ const SideBar: FC<{ setId: number }> = (params) => {
         </svg>
         <h3 className="font-semibold">FlashCards</h3>
       </div>
-      <div className="flex flex-row content-center items-center rounded-md hover:bg-accent cursor-pointer">
+      <div className="flex flex-row content-center items-center rounded-md hover:bg-accent cursor-pointer"
+      onClick= {
+         (e) => {
+            navigate(`/cardset/test/${params.setId}`);
+         }
+      }>
         <svg
           className="w-12 h-12"
           fill="none"

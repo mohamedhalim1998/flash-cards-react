@@ -8,6 +8,7 @@ import Cards from "./pages/Cards";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { loadCardSets, updateLoading } from "./store/CardSetsReducer";
 import { TwinSpin } from "react-cssfx-loading/lib";
+import Test from "./pages/Test";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ function App() {
     <div className="App bg-gray-100">
       <Routes>
         <Route path="/cardset/edit/:id" element={<NewSet />} />
+        <Route path="/cardset/test/:id" element={<Test />} />
         <Route path="/cardset/new" element={<NewSet />} />
         <Route path="/cardset/:id" element={<Cards />} />
         <Route path="/cardset" element={<Home />} />
