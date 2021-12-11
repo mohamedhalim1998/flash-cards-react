@@ -41,7 +41,7 @@ function Learn() {
     );
   }
   return (
-    <div>
+    <div className=" font-mono">
       <LearnBar setTitle={cardSet.name} />
       <CardQuestion cards={cards} />
     </div>

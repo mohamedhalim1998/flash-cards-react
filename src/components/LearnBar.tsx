@@ -11,7 +11,7 @@ const LearnBar: FC<{ setTitle: string }> = (params) => {
       >
         Flash Cards
       </Link>
-      <h2 className="justify-self-center self-center mr-auto absolute text-2xl  font-bold font-mono">
+      <h2 className="justify-self-center self-center mr-auto absolute text-2xl  font-bold">
         {params.setTitle}
       </h2>
     </div>
