@@ -4,7 +4,7 @@ import {
   createSelector,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import Card from "../data/Card";
+import Card, { cardColors } from "../data/Card";
 import { apiCall } from "../middleware/ApiMiddleware";
 import { RootState } from "./Store";
 
@@ -25,6 +25,8 @@ export const updateCardFront =
   createAction<{ index: number; value: string }>("updateCardFront");
 export const updateCardBack =
   createAction<{ index: number; value: string }>("updateCardBack");
+export const updateCardColor =
+  createAction<{ index: number; value: string }>("updateCardColor");
 export const deleteCard = createAction<number>("deleteCard");
 export const addCard = createAction<Card>("addCard");
 export const addNewCard = createAction("addNewCard");
@@ -90,8 +92,14 @@ export default createReducer(initState, {
   ) => {
     state.cards[action.payload.index].back = action.payload.value;
   },
+  [updateCardColor.type]: (
+    state,
+    action: PayloadAction<{ index: number; value: string }>
+  ) => {
+    state.cards[action.payload.index].color = action.payload.value;
+  },
   [addNewCard.type]: (state) => {
-    state.cards.push({ front: "", back: "" });
+    state.cards.push({ front: "", back: "", color: cardColors[0] });
   },
   [addCard.type]: (state, action: PayloadAction<Card>) => {
     state.cards.push(action.payload);

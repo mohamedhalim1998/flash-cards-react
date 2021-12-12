@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Card from "../data/Card";
+import Card, { cardColors } from "../data/Card";
 
 function FlashCard(card: Card) {
   const [flip, setFlip] = useState<boolean>(false);
@@ -10,6 +10,7 @@ function FlashCard(card: Card) {
       className={`card mx-12 h-4/6 text-center align-middle flex flex-col justify-center my-0 cursor-pointer ${
         flip ? "flip-card" : ""
       }`}
+      style={{background: card.color ? card.color : cardColors[0]}}
       onClick={(e) => {
         setFlip(true);
         const next = cardText === card.front ? card.back : card.front;

@@ -9,9 +9,9 @@ function Home() {
   const cardsets = useAppSelector((state) => state.cardSets.sets);
   const query = useAppSelector((state) => state.cardSets.query);
   const dispatch = useAppDispatch();
-//   useEffect(() => {
-//     dispatch(loadCardSets());
-//   }, []);
+  useEffect(() => {
+    dispatch(loadCardSets());
+  }, []);
   return (
     <div>
       <NavBar />
