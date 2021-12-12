@@ -11,6 +11,7 @@ import { RootState } from "./Store";
 
 export const updateLoading = createAction<boolean>("updateLoading");
 export const updateSets = createAction("updateSets");
+export const updateQuery = createAction<string>("updateQuery");
 export const updateCards = createAction("updateCards");
 export const loadCardSets = () =>
   apiCall({
@@ -62,8 +63,14 @@ export const getSetById = (id: number): ((state: RootState) => CardSet) =>
     (sets: CardSet[]) => sets.filter((set) => set.id === id)[0]
   );
 
+export const filterSets = (sets: CardSet[], query: string): CardSet[] =>
+  sets.filter(
+    (set) => set.name.includes(query) || set.description?.includes(query)
+  );
+
 const initState = {
   loading: false,
+  query: "",
   sets: [] as CardSet[],
   cards: [] as Card[],
 };
@@ -71,6 +78,9 @@ const initState = {
 export default createReducer(initState, {
   [updateLoading.type]: (state, action) => {
     state.loading = action.payload;
+  },
+  [updateQuery.type]: (state, action) => {
+    state.query = action.payload;
   },
   [updateSets.type]: (state, action) => {
     state.sets = action.payload.data;

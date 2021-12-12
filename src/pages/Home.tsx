@@ -2,20 +2,21 @@ import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import CardSetCard from "../components/CardSet";
-import { loadCardSets } from "../store/CardSetsReducer";
+import { filterSets, loadCardSets } from "../store/CardSetsReducer";
 import NavBar from "../components/NavBar";
 
 function Home() {
   const cardsets = useAppSelector((state) => state.cardSets.sets);
+  const query = useAppSelector((state) => state.cardSets.query);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(loadCardSets());
-  }, []);
+//   useEffect(() => {
+//     dispatch(loadCardSets());
+//   }, []);
   return (
     <div>
       <NavBar />
       <div className="container grid md:grid-cols-3 gap-4 pt-8 mx-auto px-8">
-        {cardsets.map((cardset) => (
+        {filterSets(cardsets, query).map((cardset) => (
           <CardSetCard
             key={cardset.id}
             id={cardset.id}
