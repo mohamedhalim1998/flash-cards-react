@@ -25,6 +25,7 @@ class Card(db.Model):
     setId = db.Column(db.Integer)
     front = db.Column(db.String)
     back = db.Column(db.String)
+    color = db.Column(db.String)
 
     def serialize(card):
         return {
@@ -32,4 +33,5 @@ class Card(db.Model):
             'setId': card.setId,
             "front": card.front,
             "back": card.back,
+            "color": card.color,
         }

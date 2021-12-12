@@ -47,6 +47,7 @@ def add_card_set():
                     setId=setId,
                     front=c["front"],
                     back=c["back"],
+                    color=c["color"]
                 )
                 db.session.add(card)
             cardSet.count += len(data["cards"])
@@ -71,6 +72,7 @@ def update_card_set():
                     setId=setId,
                     front=c["front"],
                     back=c["back"],
+                    color=c["color"]
                 )
                 db.session.add(card)
             cardSet.count = len(data["cards"])
@@ -102,12 +104,13 @@ def add_card():
             setId=data["setId"],
             front=data["front"],
             back=data["back"],
+            color=data["color"]
         )
         db.session.add(card)
         cardSet = CardSet.query.filter_by(id=data['setId']).all()
         print(cardSet[0].count)
         cardSet[0].count += 1
-        # db.session.add(cardSet)
+        db.session.add(cardSet)
         db.session.commit()
         return enable_CORS(card.serialize())
 
@@ -120,6 +123,7 @@ def update_card():
         card = Card.query.filter_by(id=data["id"]).all()[0]
         card.front = data["front"]
         card.back = data["back"]
+        card.color = data["color"]
         db.session.add(card)
         db.session.commit()
         return enable_CORS(card.serialize())
